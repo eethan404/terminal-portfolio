@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ehsan | Terminal Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #top-bar {
+      background-color: #111;
+      color: #33ff33;
+      padding: 10px 20px;
+      display: flex;
+      gap: 20px;
+      border-bottom: 1px solid #333;
+      font-weight: bold;
+    }
+    #terminal {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #000;
+      color: #fff;
+      white-space: pre-wrap;
+    }
+    .input-line::before {
+      content: "ehsan@portfolio:~$ ";
+      color: #0af;
+    }
+    .input-line {
+      display: flex;
+      align-items: center;
+    }
+    input {
+      background: none;
+      border: none;
+      color: #fff;
+      outline: none;
+      font-family: inherit;
+      font-size: 1rem;
+      width: 100%;
+    }
+    .output {
+      margin-bottom: 1em;
+    }
+    #footer {
+      background-color: #111;
+      color: #0af;
+      text-align: center;
+      padding: 5px 0;
+      font-size: 0.9em;
+      border-top: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <div id="top-bar">
+    help | about | skills | certification | contact | education | clear
+  </div>
+
+  <div id="terminal">
+    <div class="output">Welcome to Ehsan's portfolio terminal.<br>Type <b>help</b> to see available commands.</div>
+    <div class="input-line"><input type="text" autofocus /></div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+    const input = terminal.querySelector("input");
+    const footer = document.getElementById("footer");
+
+    function updateClock() {
+      const now = new Date();
+      footer.textContent = now.toLocaleString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    const commands = {
+      help: `Available commands:
+  about - Learn about Ehsan
+  skills - View skills
+  certification - View certifications
+  contact - Get in touch
+  education - Academic background
+  clear - Clear the screen`,
+
+      about: `Hi, I'm Ehsan.
+EE M.Sc. / IT Specialist / Teacher / Art Enthusiast
+Tech & Sci Geek | Keen Runner | Bball Fan and Perfectly Imperfect.
+
+I have a Master’s in Analog Integrated Circuits Design and a background in Electrical Engineering.
+Currently diving deep into hardware design—especially PCB design—as an intern.
+Always learning, always curious. Open to new challenges and opportunities.`,
+
+      contact: `📧 eethanr@proton.me`,
+
+      education: `M.Sc. in Electrical Engineering – Analog Integrated Circuit Design
+B.Sc. in Electrical Engineering – Electronics`,
+
+      skills: `Under Construction... Like any good geek project, it's booting up.`,
+
+      certification: `Under Construction... Loading modules.`,
+
+      clear: ""
+    };
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        const command = input.value.trim().toLowerCase();
+        const newLine = document.createElement("div");
+        newLine.innerHTML = `<span class="input-line">ehsan@portfolio:~$ ${command}</span>`;
+        terminal.insertBefore(newLine, input.parentElement);
+
+        const output = document.createElement("div");
+        output.classList.add("output");
+        output.textContent = commands[command] || `Command not found: ${command}`;
+        if (command === "clear") {
+          terminal.innerHTML = "";
+          terminal.appendChild(output);
+          const newInput = document.createElement("div");
+          newInput.className = "input-line";
+          newInput.innerHTML = '<input type="text" autofocus />';
+          terminal.appendChild(newInput);
+          newInput.querySelector("input").focus();
+          return;
+        }
+
+        terminal.insertBefore(output, input.parentElement);
+        input.value = "";
+        window.scrollTo(0, document.body.scrollHeight);
+      }
+    });
+  </script>
+</body>
+</html>
