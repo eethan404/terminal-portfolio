@@ -20,6 +20,7 @@
       display: flex;
       justify-content: space-around;
       font-weight: bold;
+      flex-wrap: wrap;
     }
     #terminal {
       padding: 20px;
@@ -46,6 +47,9 @@
       padding: 5px;
       font-size: 0.9em;
       border-top: 1px solid #333;
+    }
+    #command {
+      color: #0f0;
     }
   </style>
 </head>
@@ -91,8 +95,8 @@
 
     const commands = {
       help: "Available commands: help, about, education, certifications, skills, contact, clear",
-      about: `Hi, I’m Ehsan.\nEE M.Sc. / IT Specialist / Teacher / Art Enthusiast\nTech & Sci Geek | Keen Runner | Bball Fan and Perfectly Imperfect.\n\nI have a Master’s in Analog Integrated Circuits Design and a background in Electrical Engineering.\nCurrently diving deep into hardware design—especially PCB design—as an intern.\nAlways learning, always curious. Open to new challenges and opportunities.`,
-      contact: "📧 eethanr@proton.me",
+      about: `Hi, I’m Ethan.\nEE M.Sc. / IT Specialist / Teacher / Art Enthusiast\nTech & Sci Geek | Keen Runner | Bball Fan and Perfectly Imperfect.\n\nI have a Master’s in Analog Integrated Circuits Design and a background in Electrical Engineering.\nCurrently diving deep into hardware design—especially PCB design—as an intern.\nAlways learning, always curious. Open to new challenges and opportunities.`,
+      contact: "\uD83D\uDCE7 eethanr@proton.me",
       education: `M.Sc. in Electrical Engineering – Analog Integrated Circuit Design\nB.Sc. in Electrical Engineering – Electronics`,
       skills: "[Under construction] Geeking out on this section soon...",
       certifications: "[Under construction] Collecting cool certificates...",
@@ -113,21 +117,32 @@
     }
 
     function simulateWelcomePrompt() {
-      const welcome = "$ Type a command...";
+      const welcomeMessages = [
+        "Welcome!",
+        "I'm Ethan, an electronic engineer",
+        "This is my interactive portfolio terminal.",
+        "Type 'help' to see available commands!"
+      ];
       let i = 0;
-      const speed = 75;
-      const line = document.createElement("div");
-      line.classList.add("prompt");
-      terminal.appendChild(line);
-
-      function typeChar() {
-        if (i < welcome.length) {
-          line.innerHTML += welcome.charAt(i);
-          i++;
-          setTimeout(typeChar, speed);
+      function typeNextLine() {
+        if (i < welcomeMessages.length) {
+          const line = document.createElement("div");
+          terminal.appendChild(line);
+          let j = 0;
+          function typeChar() {
+            if (j < welcomeMessages[i].length) {
+              line.innerHTML += welcomeMessages[i].charAt(j);
+              j++;
+              setTimeout(typeChar, 50);
+            } else {
+              i++;
+              setTimeout(typeNextLine, 300);
+            }
+          }
+          typeChar();
         }
       }
-      typeChar();
+      typeNextLine();
     }
 
     commandEl.focus();
