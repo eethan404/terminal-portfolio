@@ -112,7 +112,27 @@
       }
     }
 
+    function simulateWelcomePrompt() {
+      const welcome = "$ Type a command...";
+      let i = 0;
+      const speed = 75;
+      const line = document.createElement("div");
+      line.classList.add("prompt");
+      terminal.appendChild(line);
+
+      function typeChar() {
+        if (i < welcome.length) {
+          line.innerHTML += welcome.charAt(i);
+          i++;
+          setTimeout(typeChar, speed);
+        }
+      }
+      typeChar();
+    }
+
     commandEl.focus();
+    simulateWelcomePrompt();
+
     commandEl.addEventListener("keydown", function (e) {
       if (e.key === "Enter") {
         e.preventDefault();
